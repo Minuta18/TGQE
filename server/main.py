@@ -1,12 +1,13 @@
 import logging
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('main')
 
 logging.basicConfig(
     format='[%(levelname)s] %(asctime)s %(module)s.%(funcName)s: %(message)s', 
-    filename='app.log', 
     level=logging.DEBUG
 )
+
+import lua_runner
 
 if __name__ == '__main__':
     pass
