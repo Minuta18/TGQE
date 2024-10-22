@@ -20,4 +20,9 @@ if __name__ == '__main__':
     cont.execute('''
 print(math.floor(0.1))
 engine.awesome_print(\'Hello LUA!\')
+
+function sus(a, b) 
+    return a + b
+end
 ''')
+    print(cont.call_func('sus', args=(5, 3)))
