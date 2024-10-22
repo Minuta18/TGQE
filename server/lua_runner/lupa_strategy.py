@@ -11,14 +11,14 @@ except ImportError:
     sys.exit(-1)
 logger.info('LuaJIT 2.1 loaded successfully')
 
-from server.lua_runner.lua_runtime import runtime_strategy_interface as rsi
+from lua_runner import runtime_strategy_interface as rsi
 
 class LupaStrategy(rsi.RuntimeStrategyInterface):
     '''
     Lua runtime strategy that implements it using lupa library
     '''
     
-    def __init__(self, max_memory: int):
+    def __init__(self, max_memory: int = 1000):
         '''
         Lua runtime strategy that implements it using lupa library
         
@@ -40,7 +40,7 @@ class LupaStrategy(rsi.RuntimeStrategyInterface):
             None
         '''
         
-        self._runtime.execute()
+        self._runtime.execute(code)
         
     def register_api(self, lua_api: lua_api.LuaApi) -> None:
         '''
@@ -56,5 +56,11 @@ class LupaStrategy(rsi.RuntimeStrategyInterface):
         methods = lua_api.get_all_methods()
         
         for method in methods.keys():
-            self._runtime.globals()[method] = \
-                methods[method]
+            namespaces = method.split('.')
+            curr_namespace = self._runtime.globals()
+            for namespace in namespaces[:-1]:
+                if curr_namespace[namespace] is None:
+                    curr_namespace[namespace] = self._runtime.eval('{}')
+                curr_namespace = curr_namespace[namespace]
+            curr_namespace[namespaces[-1]] = methods[method]
+

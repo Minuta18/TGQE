@@ -18,7 +18,7 @@ class LuaApi:
     def register_api_method(
         self,
         lua_name: str, 
-        py_method: typing.Callable[..., typing.any],
+        py_method: typing.Callable[..., typing.Any],
     ) -> None:
         '''
         Registers new API method
@@ -44,7 +44,7 @@ class LuaApi:
     def change_api_method(
         self,
         lua_name: str, 
-        py_method: typing.Callable[..., typing.any],
+        py_method: typing.Callable[..., typing.Any],
     ) -> None:
         '''
         Changes API method
@@ -63,7 +63,7 @@ class LuaApi:
         self._methods[lua_name] = py_method
         
     def get_all_methods(self) -> dict[
-        str, dict[str, typing.Callable[..., typing.any]]
+        str, dict[str, typing.Callable[..., typing.Any]]
     ]:
         '''
         Returns all methods
