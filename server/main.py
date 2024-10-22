@@ -10,7 +10,7 @@ logging.basicConfig(
 import lua_runner
 
 def awesome_print(text):
-    print('SUSSY PRINT:', text)
+    print('AWESOME PRINT:', text)
 
 if __name__ == '__main__':
     api = lua_runner.LuaApi()
@@ -21,8 +21,8 @@ if __name__ == '__main__':
 print(math.floor(0.1))
 engine.awesome_print(\'Hello LUA!\')
 
-function sus(a, b) 
+function cool_sum(a, b) 
     return a + b
 end
 ''')
-    print(cont.call_func('sus', args=(5, 3)))
+    print(cont.call_func('cool_sum', args=(5, 3)))
