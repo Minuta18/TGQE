@@ -1,5 +1,6 @@
 import sys
 import logging
+from lua_runner import lua_api
 
 logger = logging.getLogger('main')
 
@@ -40,3 +41,25 @@ class LupaStrategy(rsi.RuntimeStrategyInterface):
         '''
         
         self._runtime.execute()
+        
+    def register_api(self, lua_api: lua_api.LuaApi) -> None:
+        '''
+        Registers all methods from the API
+        
+        Args:
+            lua_api: LuaApi - api to register
+            
+        Returns:
+            None
+        '''
+        
+        methods = lua_api.get_all_methods()
+        
+        for namespace in methods.keys():
+            for method in methods[namespace].keys():
+                if namespace == '':
+                    self._runtime.globals()[method] = \
+                        methods[namespace][method]
+                else:
+                    self._runtime.globals()[namespace + '.' + method] = \
+                        methods[namespace][method]

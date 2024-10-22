@@ -1,3 +1,5 @@
 from lua_runner.runtime_strategy_interface import RuntimeStrategyInterface
-from server.lua_runner.lua_runtime import lua_runtime
+from lua_runner import lua_api
+from lua_runner import lua_runtime
+from lua_runner import lupa_strategy
 

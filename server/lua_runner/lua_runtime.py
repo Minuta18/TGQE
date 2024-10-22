@@ -1,4 +1,5 @@
 from lua_runner import runtime_strategy_interface as rsi
+from lua_runner import lua_api
 
 class LuaRuntime:
     '''
@@ -27,3 +28,16 @@ class LuaRuntime:
         '''
         
         self.strategy.execute(code)
+        
+    def register_api(self, api: lua_api.LuaApi) -> None:
+        '''
+        Registers all methods from the API
+        
+        Args:
+            lua_api: LuaApi - api to register
+            
+        Returns:
+            None
+        '''
+        
+        self.strategy.register_api(api)

@@ -76,3 +76,14 @@ class LuaApi:
         self._namespaces = dict()
         self._namespaces[namespace][lua_name] = py_method
         
+    def get_all_methods(self) -> dict[
+        str, dict[str, typing.Callable[..., typing.any]]
+    ]:
+        '''
+        Returns all methods
+        
+        Returns all methods and represent as dict
+        '''
+        
+        return self._namespaces
+        
