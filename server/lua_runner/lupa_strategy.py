@@ -55,11 +55,6 @@ class LupaStrategy(rsi.RuntimeStrategyInterface):
         
         methods = lua_api.get_all_methods()
         
-        for namespace in methods.keys():
-            for method in methods[namespace].keys():
-                if namespace == '':
-                    self._runtime.globals()[method] = \
-                        methods[namespace][method]
-                else:
-                    self._runtime.globals()[namespace + '.' + method] = \
-                        methods[namespace][method]
+        for method in methods.keys():
+            self._runtime.globals()[method] = \
+                methods[method]
