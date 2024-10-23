@@ -10,11 +10,13 @@ class LuaMessage:
     message_id: int|None = None    
     message_text: str|None = None
     image_path: str|None = None
+    image_filename: str|None = None
     
     def __init__(self, 
         message_text: str|None = None, 
         image_path: str|None = None,
         message_id: int|None = None,
+        image_filename: str|None = None,
     ):
         '''
         Class that represents telegram message in Lua
@@ -23,5 +25,6 @@ class LuaMessage:
         self.message_text = message_text
         self.image_path = image_path
         self.message_id = message_id
+        self.image_filename = image_filename
         
 api.register_api_object('LuaMessage', LuaMessage)
