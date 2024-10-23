@@ -1,4 +1,5 @@
 import typing
+import typing_extensions
 
 class LuaApi:
     '''
@@ -43,6 +44,8 @@ class LuaApi:
         Returns:
             None
         '''
+        
+        print(lua_name)
         if self._table is not None:
             lua_name = f'{self._table}.{lua_name}'
         if self._methods.get(lua_name) is not None:
@@ -119,7 +122,7 @@ class LuaApi:
     
         self._table = new_table_name
     
-    def include_api(self, api: typing.Self) -> None:
+    def include_api(self, api: typing_extensions.Self) -> None:
         '''
         Includes all methods from the given api to this.
         
@@ -160,12 +163,8 @@ class LuaApi:
         '''
     
         self._included_apis.append(api)
-        
-    def api_method(
-        self, 
-        func: typing.Callable[..., typing.Any], 
-        lua_name: str
-    ) -> typing.Callable[..., typing.Any]:
+    
+    def api_method(self, lua_name: str) -> typing.Callable[..., typing.Any]:
         '''
         Api method decorator
         
@@ -182,9 +181,7 @@ class LuaApi:
             lua_name: str - name in lua (can be different)
         '''
         
-        def wrapper(*args, **kwargs):
+        def wrapper(func: typing.Callable[..., typing.Any], *args, **kwargs):
             self.register_api_method(lua_name, func)
-            return func(*args, **kwargs)
         return wrapper
-
     
