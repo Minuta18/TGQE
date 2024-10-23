@@ -8,7 +8,10 @@ class LuaApi:
     Class for collecting information about API methods
     '''
     
-    def __init__(self, table: str = None):
+    _methods: dict[str, typing.Callable[..., typing.Any]]
+    _included_apis: list[typing_extensions.Self]
+    
+    def __init__(self, table: str|None = None):
         '''
         Lua API class
     
@@ -76,7 +79,7 @@ class LuaApi:
         self._methods[lua_name] = py_method
         
     def get_all_methods(self) -> dict[
-        str, dict[str, typing.Callable[..., typing.Any]]
+        str, typing.Callable[..., typing.Any]
     ]:
         '''
         Returns all methods
@@ -95,7 +98,7 @@ class LuaApi:
             
         return methods_to_return
         
-    def get_table_name(self) -> str:
+    def get_table_name(self) -> str | None:
         '''
         Returns name of the table, where methods will be created
         
@@ -114,7 +117,7 @@ class LuaApi:
         '''
                 
         for method in self._methods.keys():
-            new_name = method.removesuffix(self._table + '.')
+            new_name = method.removesuffix(self._table or '' + '.')
             if new_table_name is not None:
                 new_name = f'{new_table_name}.{new_name}'
             self._methods[new_name] = self._methods[method]
