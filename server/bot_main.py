@@ -32,7 +32,7 @@ class TG_bot:
                     await aiogram.methods.send_photo.SendPhoto(
                         chat_id=message.from_user.id,
                         photo=types.FSInputFile(path=i[1]),
-                        captiom=i[0],
+                        caption=i[0],
                         show_caption_above_media=True
                     )
 
