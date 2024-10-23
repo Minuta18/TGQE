@@ -10,26 +10,13 @@ logging.basicConfig(
 )
 
 import lua_runner
-
-def awesome_print(text):
-    print('AWESOME PRINT:', text)
+import lua_api
 
 if __name__ == '__main__':
-    api = lua_runner.LuaApi() # Class to handle LUA API
-    # Registering function awesome_print in engine table, which will execute
-    # awesome_print from python
-    api.register_api_method('engine.awesome_print', awesome_print)
-    
-    # Class which will execute lua code
     cont = lua_runner.LuaRuntime(lua_runner.LupaStrategy())
-    cont.register_api(api) # Allows lua to use methods from api 
-    # Executes simple code:
+    cont.register_api(lua_api.engine_api)
     cont.execute('''
-engine.awesome_print(\'Hello LUA!\')
-
-function cool_sum(a, b) 
-    return a + b
-end
+engine.utils.print_hello_world()
 ''')
     print(cont.call_func('cool_sum', args=(5, 3))) # Calls function from lua
 

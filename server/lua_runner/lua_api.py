@@ -1,4 +1,5 @@
 import typing
+import typing_extensions
 
 class LuaApi:
     '''
@@ -7,7 +8,10 @@ class LuaApi:
     Class for collecting information about API methods
     '''
     
-    def __init__(self, table: str = None):
+    _methods: dict[str, typing.Callable[..., typing.Any]]
+    _included_apis: list[typing_extensions.Self]
+    
+    def __init__(self, table: str|None = None):
         '''
         Lua API class
     
@@ -43,6 +47,8 @@ class LuaApi:
         Returns:
             None
         '''
+        
+        print(lua_name)
         if self._table is not None:
             lua_name = f'{self._table}.{lua_name}'
         if self._methods.get(lua_name) is not None:
@@ -73,7 +79,7 @@ class LuaApi:
         self._methods[lua_name] = py_method
         
     def get_all_methods(self) -> dict[
-        str, dict[str, typing.Callable[..., typing.Any]]
+        str, typing.Callable[..., typing.Any]
     ]:
         '''
         Returns all methods
@@ -92,7 +98,7 @@ class LuaApi:
             
         return methods_to_return
         
-    def get_table_name(self) -> str:
+    def get_table_name(self) -> str | None:
         '''
         Returns name of the table, where methods will be created
         
@@ -111,7 +117,7 @@ class LuaApi:
         '''
                 
         for method in self._methods.keys():
-            new_name = method.removesuffix(self._table + '.')
+            new_name = method.removesuffix(self._table or '' + '.')
             if new_table_name is not None:
                 new_name = f'{new_table_name}.{new_name}'
             self._methods[new_name] = self._methods[method]
@@ -119,7 +125,7 @@ class LuaApi:
     
         self._table = new_table_name
     
-    def include_api(self, api: typing.Self) -> None:
+    def include_api(self, api: typing_extensions.Self) -> None:
         '''
         Includes all methods from the given api to this.
         
@@ -160,12 +166,8 @@ class LuaApi:
         '''
     
         self._included_apis.append(api)
-        
-    def api_method(
-        self, 
-        func: typing.Callable[..., typing.Any], 
-        lua_name: str
-    ) -> typing.Callable[..., typing.Any]:
+    
+    def api_method(self, lua_name: str) -> typing.Callable[..., typing.Any]:
         '''
         Api method decorator
         
@@ -182,9 +184,7 @@ class LuaApi:
             lua_name: str - name in lua (can be different)
         '''
         
-        def wrapper(*args, **kwargs):
+        def wrapper(func: typing.Callable[..., typing.Any], *args, **kwargs):
             self.register_api_method(lua_name, func)
-            return func(*args, **kwargs)
         return wrapper
-
     
