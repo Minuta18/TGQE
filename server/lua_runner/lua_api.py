@@ -48,12 +48,37 @@ class LuaApi:
             None
         '''
         
-        print(lua_name)
         if self._table is not None:
             lua_name = f'{self._table}.{lua_name}'
         if self._methods.get(lua_name) is not None:
             raise IndexError(f'lua_name={lua_name} is already used')
         self._methods[lua_name] = py_method
+        
+    def register_api_object(self,
+        lua_name: str, 
+        py_object: typing.Any,
+    ) -> None:
+        '''
+        Registers api object
+        
+        Doing exactly same things as `register_api_method()`, but for object.
+        
+        Args:
+            lua_name: str - class name in lua
+            py_object: Any - class in python
+            
+        Raises:
+            IndexError - if lua_name in current namespace is already used
+            
+        Returns:
+            None
+        '''
+        
+        if self._table is not None:
+            lua_name = f'{self._table}.{lua_name}'
+        if self._methods.get(lua_name) is not None:
+            raise IndexError(f'lua_name={lua_name} is already used')
+        self._methods[lua_name] = py_object
     
     def change_api_method(
         self,
