@@ -33,4 +33,12 @@ def message_handler(msg: lua_api.telegram.LuaMessage):
 bot_server.bot.set_message_handler(message_handler)
 
 if __name__ == '__main__':
-    asyncio.run(bot_server.bot.run())
+    # asyncio.run(bot_server.bot.run())
+    
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    
+    try:
+        loop.run_until_complete(bot_server.bot.run())
+    finally:
+        loop.close()

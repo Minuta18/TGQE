@@ -7,6 +7,8 @@ import lua_api
 def _tg_bot_empty_callback(msg: lua_api.telegram.LuaMessage):
     return None
 
+message_queue = list() # TODO: костыль, потом пофикшу
+
 class TelegramBot:
     def __init__(self, token: str, on_send_callback: typing.Callable[
         [lua_api.telegram.LuaMessage], None 
@@ -27,6 +29,10 @@ class TelegramBot:
             )
             
             self._message_handler(lua_message)
+            
+            for msg in message_queue:
+                await self.send_message(msg)
+            message_queue.clear()
         
     async def send_message(self,
         msg: lua_api.telegram.LuaMessage
