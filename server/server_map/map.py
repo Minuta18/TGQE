@@ -3,10 +3,10 @@ class Map:
         self.locations = locations
         self.connections = connections
 
-    def add_new_location(self, unique_name, name, data):
+    def add_new_location(self, unique_name: str, name: str, data: dict):
         self.locations.append([unique_name, name, data])
 
-    def add_new_connection(self, unique_name, first_location, second_location, data):
+    def add_new_connection(self, unique_name: str, first_location: str, second_location: str, data: dict):
         first_location_exist = False
         second_location_exist = False
 
@@ -29,7 +29,7 @@ class Map:
         self.connections.append([unique_name, first_location, second_location, data])
         return True, "Successfully added new connection"
 
-    def find_location(self, location_unique_name):
+    def find_location(self, location_unique_name: str):
         location_exist = False
         location_id = None
         location = []
@@ -43,7 +43,7 @@ class Map:
 
         return location_exist, location_id, location
 
-    def find_connection(self, connection_unique_name):
+    def find_connection(self, connection_unique_name: str):
         connection_exist = False
         connection_id = None
         connection = []
@@ -57,21 +57,21 @@ class Map:
 
         return connection_exist, connection_id, connection
 
-    def edit_location_data(self, location_unique_name, new_data):
+    def edit_location_data(self, location_unique_name: str, new_data: dict):
         result, id, location = self.find_location(location_unique_name)
         if not result:
             return False, None
         self.locations[id][2] = new_data
         return True, id
 
-    def edit_connection_data(self, connection_unique_name, new_data):
+    def edit_connection_data(self, connection_unique_name: str, new_data: dict):
         result, id, connection = self.find_connection(connection_unique_name)
         if not result:
             return False, None
         self.connections[id][3] = new_data
         return True, id
 
-    def find_all_location_connections(self, location_unique_name):
+    def find_all_location_connections(self, location_unique_name: str):
         result, id, location = self.find_location(location_unique_name)
         if not result:
             return False, []
