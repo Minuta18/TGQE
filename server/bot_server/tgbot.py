@@ -1,13 +1,13 @@
 import aiogram
 import logging
 import typing
-
+import asyncio
 import lua_api
 
 def _tg_bot_empty_callback(msg: lua_api.telegram.LuaMessage):
     return None
 
-message_queue = list() # TODO: костыль, потом пофикшу
+message_queue = asyncio.Queue()
 
 class TelegramBot:
     def __init__(self, token: str, on_send_callback: typing.Callable[
@@ -30,9 +30,9 @@ class TelegramBot:
             
             self._message_handler(lua_message)
             
-            for msg in message_queue:
+            while not message_queue.empty():
+                msg = message_queue.get_nowait()
                 await self.send_message(msg)
-            message_queue.clear()
         
     async def send_message(self,
         msg: lua_api.telegram.LuaMessage
