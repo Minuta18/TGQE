@@ -26,12 +26,24 @@ function reply_with_text(msg, text)
     engine.telegram.send(new_msg)
 end
 
+function reply_with_image(msg, text, path)
+    new_msg = engine.telegram.LuaMessage:create()
+    new_msg.chat_id = msg.chat_id
+    new_msg.message_text = text
+    new_msg.image_path = path
+
+    engine.telegram.send(new_msg)
+end
+
 function on_send(msg)
     if string.starts(msg.message_text, "/start") then
         player_quest_started[msg.chat_id] = true
         player_positions[msg.chat_id] = "старт"
         player_has_key[msg.chat_id] = false
-        reply_with_text(msg, "Вы очнулись в странной комнате. Перед вами проход на склад и дверь под кодовым замком...")
+        reply_with_image(
+            msg, "Вы очнулись в странной комнате. Перед вами проход на склад и дверь под кодовым замком...",
+            "../scripts/res/start.png"
+        )
     end
 
     if not player_quest_started[msg.chat_id] then
@@ -60,15 +72,15 @@ function on_send(msg)
 
         if (args[2] == "старт") then
             player_positions[msg.chat_id] = "старт"
-            reply_with_text(msg, "Вы перешли на локацию: старт")
+            reply_with_image(msg, "Вы перешли на локацию: старт", "../scripts/res/start.png")
             return
         end
         if (args[2] == "склад") then
             player_positions[msg.chat_id] = "склад"
             if not player_has_key[msg.chat_id] then
-                reply_with_text(msg, "Вы перешли на локацию: склад\nВы заметили бумажку на полу")
+                reply_with_image(msg, "Вы перешли на локацию: склад\nВы заметили бумажку на полу", "../scripts/res/storage.png")
             else
-                reply_with_text(msg, "Вы перешли на локацию: склад")
+                reply_with_image(msg, "Вы перешли на локацию: склад", "../scripts/res/storage.png")
             end
             return
         end
@@ -89,8 +101,8 @@ function on_send(msg)
 
             player_positions[msg.chat_id] = "финиш"
             player_quest_started[msg.chat_id] = false
-            reply_with_text(
-                msg, "Вы прошли квест! Используйте /start чтобы начать сначала"
+            reply_with_image(
+                msg, "Вы прошли квест! Используйте /start чтобы начать сначала", "../scripts/res/stairs.png"
             )
             return
         end
