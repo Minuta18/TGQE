@@ -17,6 +17,7 @@ end
 player_positions = {}
 player_quest_started = {}
 player_has_key = {}
+player_has_pashalca = {}
 
 function reply_with_text(msg, text)
     new_msg = engine.telegram.LuaMessage:create()
@@ -40,8 +41,9 @@ function on_send(msg)
         player_quest_started[msg.chat_id] = true
         player_positions[msg.chat_id] = "старт"
         player_has_key[msg.chat_id] = false
+        player_has_pashalca[msg.chat_id] = false
         reply_with_image(
-            msg, "Вы очнулись в странной комнате. Перед вами проход на склад и дверь под кодовым замком...",
+            msg, "Вы очнулись в странной комнате. Перед вами проход на склад и дверь под кодовым замком...\nЕсли нужна помошь по командам, воспользуйтесь /help",
             "../scripts/res/start.png"
         )
     end
@@ -66,7 +68,7 @@ function on_send(msg)
     if string.starts(msg.message_text, "/location") then
         args = string.split(msg.message_text)
         if (table.getn(args) < 2) then
-            reply_with_text(msg, "Укажите локацию для перехода")
+            reply_with_text(msg, "Укажите локацию для перехода: /location <локация>")
             return
         end
 
@@ -114,6 +116,13 @@ function on_send(msg)
             if not player_has_key[msg.chat_id] then
                 reply_with_text(msg, "Ва нашли предмет: записка с паролем")
                 player_has_key[msg.chat_id] = true
+            else
+                reply_with_text(msg, "Вы ничего не обнаружили")
+            end
+        elseif player_positions[msg.chat_id] == "старт" then
+            if not player_has_pashalca[msg.chat_id] then
+                reply_with_text(msg, "Ва нашли предмет: пасхалка")
+                player_has_pashalca[msg.chat_id] = true
             else
                 reply_with_text(msg, "Вы ничего не обнаружили")
             end
