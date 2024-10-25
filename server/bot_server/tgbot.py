@@ -25,7 +25,7 @@ class TelegramBot:
             lua_message = lua_api.telegram.LuaMessage(
                 message_text=message.md_text,
                 message_id=message.message_id,
-                chat_id=message.from_user.id
+                chat_id=message.from_user.id,
             )
             
             self._message_handler(lua_message)

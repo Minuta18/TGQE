@@ -12,6 +12,7 @@ class LuaMessage:
     image_path: str|None = None
     image_filename: str|None = None
     chat_id: int|None = None
+    user_id: int|None = None
     
     def __init__(self, 
         message_text: str|None = None, 
@@ -19,6 +20,7 @@ class LuaMessage:
         message_id: int|None = None,
         image_filename: str|None = None,
         chat_id: int|None = None,
+        user_id: int|None = None,
     ):
         '''
         Class that represents telegram message in Lua
@@ -29,6 +31,7 @@ class LuaMessage:
         self.message_id = message_id
         self.image_filename = image_filename
         self.chat_id = chat_id
+        self.user_id = user_id
         
     def create(self, *args, **kwargs):
         '''
